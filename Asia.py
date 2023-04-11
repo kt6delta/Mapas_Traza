@@ -23,7 +23,7 @@ def CreaTraza(page, posicion, color, id, peso, map):
             i += 1
 
 
-def Delhi(m):
+def Delhi(m_g, m_i, m_l):
     # Asia del Sur: New delhi, India
     posicion = {
         "Delhi": {'y': 28.6542, 'x': 77.2373},
@@ -32,8 +32,6 @@ def Delhi(m):
         "Cheney": {'y': 37.751, 'x': -97.822},
         "Bellevue": {'y': 47.6034, 'x': -122.3414},
         "Irving": {'y': 32.7797, 'x': -96.8022},
-        "Greater Noida": {'y': 28.6145, 'x': 77.3063},
-        "Cheney": {'y': 37.751, 'x': -97.822},
         "Bangalore": {'y': 12.9634, 'x': 77.5855},
         "Calcuta": {'y': 22.518, 'x': 88.3832},
         "Chaurai": {'y': 21.9974, 'x': 79.0011}
@@ -67,12 +65,12 @@ def Delhi(m):
     '157.240.1.35': 'Calcuta'
     }
 
-    CreaTraza(google, posicion, 'green', "google: New delhi, India", 5, m)
-    CreaTraza(youtube, posicion, 'red', "youtube, New delhi, India", 2, m)
-    CreaTraza(facebook, posicion, 'blue', "facebook,New delhi, India", 1, m)
+    CreaTraza(google, posicion, 'green', "google: New delhi, India", 2, m_g)
+    CreaTraza(youtube, posicion, 'red', "youtube, New delhi, India", 2, m_i)
+    CreaTraza(facebook, posicion, 'blue', "facebook,New delhi, India", 2, m_l)
 
 
-def Tokio(m):
+def Tokio(m_g, m_i, m_l):
     posicion = {
         "Tokio": {'y': 35.6164, 'x': 139.7425},
         "kawasaki": {'y': 35.6897, 'x': 139.7425},
@@ -98,13 +96,20 @@ def Tokio(m):
         '31.204.145.131': "Tokio",
         '101.203.88.39': "kawasaki",
     }
-    CreaTraza(google, posicion, 'grey',"google: Tokio, Japón",6,m)
-    CreaTraza(docomo, posicion, 'black',"docomo: Tokio, Japón",1,m)
-    CreaTraza(yahoo, posicion, 'purple',"yahoo: Tokio, Japón",4,m)
+    CreaTraza(google, posicion, 'grey',"google: Tokio, Japón",2,m_g)
+    CreaTraza(docomo, posicion, 'black',"docomo: Tokio, Japón",2,m_i)
+    CreaTraza(yahoo, posicion, 'purple',"yahoo: Tokio, Japón",2,m_l)
 
 if __name__ == '__main__':
-    m = folium.Map(location=["20.17794001195229", "-2.9395183635160786"], zoom_start=2)
+    m_g = folium.Map(location=["20.17794001195229",
+                     "-2.9395183635160786"], zoom_start=2)
+    m_i = folium.Map(location=["20.17794001195229",
+                     "-2.9395183635160786"], zoom_start=2)
+    m_l = folium.Map(location=["20.17794001195229",
+                     "-2.9395183635160786"], zoom_start=2)
     
-    Delhi(m)
-    Tokio(m)
-    m.save('mapa_asia.html')
+    Delhi(m_g, m_i, m_l)
+    Tokio(m_g, m_i, m_l)
+    m_g.save('mapa_google_Asia.html')
+    m_i.save('mapa_youtube_Asia.html')
+    m_l.save('mapa_facebook_Asia.html')
