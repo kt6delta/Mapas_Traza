@@ -84,22 +84,42 @@ datos = {
 
 
 # Leer el archivo HTML existente
-with open('archivo.html', 'r') as file:
+with open('mapa_facebook_Asia.html', 'r') as file:
     html = file.read()
 
 # Crear un objeto BeautifulSoup
 soup = BeautifulSoup(html, 'html.parser')
 
 # Encontrar el elemento donde deseas agregar información
-elemento = soup.find('div', {'id': 'mi_div'})
+elemento = soup.find("body")#'div', {'id': 'mi_div'}
 
 # Crear un nuevo elemento HTML
-nuevo_elemento = soup.new_tag('p')
-nuevo_elemento.string = 'Nueva información desde Python'
+
+pais= ["Australia","Auckland","Amsterdam","Bruselas"]
+page= ["google","instagram","lidenking"]
+titulo=[]
+txt=[]
+
+titulo.apend( soup.new_tag('h3'))
+titulo.string ="\n"+pais+page+"\n"
+txt.append(soup.new_tag('p'))
+google1 .string = "\ninicio: "+datos[pais][page]["inicio"]+"\n"
+txt.append(soup.new_tag('p'))
+google2.string = "\nsaltos: "+datos[pais][page]["saltos"]+"\n"
+txt.append(soup.new_tag('p'))
+google3.string = "\ntime: "+datos[pais][page]["time"]+"\n"
+txt.append(soup.new_tag('p'))
+google4.string = "\nfinal: "+datos[pais][page]["final"]+"\n"
+
 
 # Agregar el nuevo elemento al elemento encontrado
-elemento.append(nuevo_elemento)
+elemento.append(titulo1)
+elemento.append(google1)
+elemento.append(google2)
+elemento.append(google3)
+elemento.append(google4)
+
 
 # Escribir el archivo HTML actualizado
-with open('archivo.html', 'w') as file:
+with open('mapa_facebook_Asia.html', 'w') as file:
     file.write(str(soup))
