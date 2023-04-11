@@ -1,24 +1,29 @@
 import folium
 
-def CreaTraza():
-    o = [(posicion[youtube[ip]]['y'], posicion[youtube[ip]]['x'])
-         for ip in youtube]
-    d = [(posicion[youtube[ip]]['y'], posicion[youtube[ip]]['x'])
-         for ip in list(youtube.keys())[1:]]
-    c = [youtube[ip] for ip in youtube]
-    i=0
 
-    for ip in list(youtube.keys()):
-        name = c[i]       
+def CreaTraza(page, posicion, color, id, peso, map):
+    o = [(posicion[page[ip]]['y'], posicion[page[ip]]['x'])
+         for ip in page]
+    d = [(posicion[page[ip]]['y'], posicion[page[ip]]['x'])
+         for ip in list(page.keys())[1:]]
+    c = [page[ip] for ip in page]
+    i = 0
+
+    for ip in list(page.keys()):
+        name = c[i]
         o_lat, o_lon = o[i]
-        folium.Marker(location=[o_lat, o_lon], popup=name+" ip:"+ip).add_to(m)
-        if i<len(d):
+        folium.Marker(location=[o_lat, o_lon],
+                      popup=name+" ip:"+ip).add_to(map)
+        if i < len(d):
             d_lat, d_lon = d[i]
-            folium.Marker(location=[d_lat, d_lon], popup=name+" ip:"+ip).add_to(m)
-            folium.PolyLine(locations=[(o_lat, o_lon), (d_lat, d_lon)],tooltip=f'', color='red',weight=2).add_to(m)
-            i+=1
+            folium.Marker(location=[d_lat, d_lon],
+                          popup=name+" ip:"+ip).add_to(map)
+            folium.PolyLine(locations=[(o_lat, o_lon), (d_lat, d_lon)],
+                            tooltip=f'{id}', color=color, weight=peso).add_to(map)
+            i += 1
 
-def Delhi():
+
+def Delhi(m):
     # Asia del Sur: New delhi, India
     posicion = {
         "Delhi": {'y': 28.6542, 'x': 77.2373},
@@ -52,7 +57,7 @@ def Delhi():
         '142.251.49.121': "Irving",
         '142.250.194.78': "Bellevue"
     }
-    
+
     facebook = {
     '164.52.192.1':  'Delhi',
     '180.179.210.65': 'Mumbai',
@@ -62,34 +67,44 @@ def Delhi():
     '157.240.1.35': 'Calcuta'
     }
 
-    m = folium.Map(location=[posicion['Bellevue']['y'],
-                             posicion['Bellevue']['x']], zoom_start=7)
+    CreaTraza(google, posicion, 'green', "google: New delhi, India", 5, m)
+    CreaTraza(youtube, posicion, 'red', "youtube, New delhi, India", 2, m)
+    CreaTraza(facebook, posicion, 'blue', "facebook,New delhi, India", 1, m)
 
 
+def Tokio(m):
+    posicion = {
+        "Tokio": {'y': 35.6164, 'x': 139.7425},
+        "kawasaki": {'y': 35.6897, 'x': 139.7425},
+        "Cheney": {'y': 37.751, 'x': -97.822},
+        "Bellevue": {'y': 47.6034, 'x': -122.3414},
+        "Ichikawa": {'y': 35.6893, 'x': 139.6899},
+    }
 
-    
-    m.save('mapa_asia.html')
-
-def Tokio():
     # Asia del Este: Tokio, Japón
     google = {
-        '31.204.145.130': {"ciudad": "Tokio", 'y': 35.6164, 'x': 139.7425},
-        '101.203.88.173 ': {"ciudad": "kawasaki", 'y': 35.6897, 'x': 139.7425},
-        '108.170.242.193': {"ciudad": "Cheney", 'y': 37.751, 'x': -97.822},
-        '142.250.207.14': {"ciudad": "Bellevue", 'y': 47.6034, 'x': -122.3414}
+        '31.204.145.130': "Tokio",
+        '101.203.88.173 ': "kawasaki",
+        '108.170.242.193': "Cheney",
+        '142.250.207.14': "Bellevue"
     }
     docomo = {
-        '31.204.145.131': {"ciudad": "Tokio", 'y': 35.6164, 'x': 139.7425},
-        '210.171.224.211': {"ciudad": "kawasaki", 'y': 35.6897, 'x': 139.6895},
-        '52.93.66.40': {"ciudad": "Ichikawa", 'y': 35.6893, 'x': 139.6899},
-        '52.223.34.187': {"ciudad": "Cheney", 'y': 37.751, 'x': -97.822}
+        '31.204.145.131': "Tokio",
+        '210.171.224.211': "kawasaki",
+        '52.93.66.40': "Ichikawa",
+        '52.223.34.187': "Cheney",
     }
     yahoo = {
-        '31.204.145.131': {"ciudad": "Tokio", 'y': 35.6164, 'x': 139.7425},
-        '101.203.88.39': {"ciudad": "kawasaki", 'y': 35.6897, 'x': 139.6895},
+        '31.204.145.131': "Tokio",
+        '101.203.88.39': "kawasaki",
     }
-
+    CreaTraza(google, posicion, 'grey',"google: Tokio, Japón",6,m)
+    CreaTraza(docomo, posicion, 'black',"docomo: Tokio, Japón",1,m)
+    CreaTraza(yahoo, posicion, 'purple',"yahoo: Tokio, Japón",4,m)
 
 if __name__ == '__main__':
-    Delhi()
-    #  m.save('mapa_asia.html')
+    m = folium.Map(location=["20.17794001195229", "-2.9395183635160786"], zoom_start=2)
+    
+    Delhi(m)
+    Tokio(m)
+    m.save('mapa_asia.html')
