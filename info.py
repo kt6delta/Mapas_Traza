@@ -1,5 +1,45 @@
 from bs4 import BeautifulSoup
 datos = {
+    "Delhi": {
+        "google": {
+            "inicio": "164.52.192.1",
+            "saltos": "8",
+            "time": "9.79",
+            "final": "142.250.206.142",
+        },
+        "youtube": {
+            "inicio": "164.52.192.1",
+            "saltos": "8",
+            "time": "9.29",
+            "final": "142.250.194.78",
+        },
+        "facebook": {
+            "inicio": "164.52.192.1",
+            "saltos": "9",
+            "time": "15.11",
+            "final": "157.240.1.35",
+        }
+    },
+    "Tokio": {
+        "google": {
+            "inicio": "31.204.145.130",
+            "saltos": "5",
+            "time": "1.8",
+            "final": "142.250.207.14",
+        },
+        "youtube": {
+            "inicio": "31.204.145.131",
+            "saltos": "4",
+            "time": "2.25",
+            "final": "52.223.34.187",
+        },
+        "facebook": {
+            "inicio": "31.204.145.131",
+            "saltos": "4",
+            "time": "5.25",
+            "final": "101.203.88.39",
+        }
+    },
     "Australia": {
         "google": {
             "inicio": "221.121.154.216",
@@ -83,8 +123,17 @@ datos = {
 }
 
 
+#pais= ["Delhi","Tokio","Australia","Auckland","Amsterdam","Bruselas"]
+#page= ["google","instagram","lidenking"]
+#page= ["google","youtube","facebook"]
+#page= ["google","docomo","yahoo"]
+mapas="mapa_youtube_Asia.html"
+pais=["Delhi","Tokio"]
+page="youtube"
+info=["inicio","saltos","time","final"]
+
 # Leer el archivo HTML existente
-with open('mapa_facebook_Asia.html', 'r') as file:
+with open(mapas, 'r') as file:
     html = file.read()
 
 # Crear un objeto BeautifulSoup
@@ -94,32 +143,36 @@ soup = BeautifulSoup(html, 'html.parser')
 elemento = soup.find("body")#'div', {'id': 'mi_div'}
 
 # Crear un nuevo elemento HTML
-
-pais= ["Australia","Auckland","Amsterdam","Bruselas"]
-page= ["google","instagram","lidenking"]
 titulo=[]
 txt=[]
 
-titulo.apend( soup.new_tag('h3'))
-titulo.string ="\n"+pais+page+"\n"
-txt.append(soup.new_tag('p'))
-google1 .string = "\ninicio: "+datos[pais][page]["inicio"]+"\n"
-txt.append(soup.new_tag('p'))
-google2.string = "\nsaltos: "+datos[pais][page]["saltos"]+"\n"
-txt.append(soup.new_tag('p'))
-google3.string = "\ntime: "+datos[pais][page]["time"]+"\n"
-txt.append(soup.new_tag('p'))
-google4.string = "\nfinal: "+datos[pais][page]["final"]+"\n"
+for i in range(0,len(pais)):
+    titulo.append(soup.new_tag('h3'))
+    for i in range(0,len(info)):
+        txt.append(soup.new_tag('p'))
 
+titulo_t=tuple(titulo)
+txt_t=tuple(txt)
+j=0
+i=0
+for c in pais:
+    titulo_t[j].string="\n"+c+" "+page+"\n"
+    j=j+1
+    for data in info:
+        txt_t[i].string= "\n"+data+": "+datos[c][page][data]+"\n"
+        i=i+1
 
 # Agregar el nuevo elemento al elemento encontrado
-elemento.append(titulo1)
-elemento.append(google1)
-elemento.append(google2)
-elemento.append(google3)
-elemento.append(google4)
+
+elemento.append(titulo_t[0])
+for i2 in range(0,len(info)):
+    elemento.append(txt_t[i2])
+    
+elemento.append(titulo_t[1])
+for i2 in range(len(info),len(info)*2):
+    elemento.append(txt_t[i2])
 
 
 # Escribir el archivo HTML actualizado
-with open('mapa_facebook_Asia.html', 'w') as file:
+with open(mapas, 'w') as file:
     file.write(str(soup))
